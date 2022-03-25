@@ -279,7 +279,7 @@ module.exports = {
     response: express.Response
   ) {
     // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos formados de um curso.'
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos cotistas formados de um curso.'
 
     // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
     // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
@@ -353,7 +353,7 @@ module.exports = {
     response: express.Response
   ) {
     // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes de um curso.'
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes cotistas de um curso.'
 
     // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
     // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }

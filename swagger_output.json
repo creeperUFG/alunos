@@ -313,6 +313,70 @@
           }
         }
       }
+    },
+    "/university/quota/graduated/students/percent/course/{course}/startyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter a porcentagem de alunos cotistas formados de um curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/quota/dropout/students/percent/course/{course}/startyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter a porcentagem de alunos desistentes cotistas de um curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "definitions": {
