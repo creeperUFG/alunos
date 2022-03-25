@@ -235,89 +235,26 @@ module.exports = {
     const course = functions.capitalizeFirstLetter(request.params.course);
 
     try {
-      const graduatedStudents: typeof Students = await Students.find({
-        $or: [
-          {
-            startYear,
-            course,
-            status: "RF e/ou RM 3 vezes na mesma disciplina",
-          },
-
-          {
-            startYear,
-            course,
-            status: "RF 3 vezes na mesma disciplina",
-          },
-
-          {
-            startYear,
-            course,
-            status:
-              "RF e/ou RM em todas as disciplinas no semestre de ingresso",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Não renovou o vínculo com a UFG",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Opção por outro curso da UFG",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Desistência do curso",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Esgotamento de prazo para conclusão de curso",
-          },
-
-          {
-            startYear,
-            course,
-            status:
-              "RF e/ou RM em todas disciplinas por 2 semestres consecutivos",
-          },
-
-          {
-            startYear,
-            course,
-            status:
-              "RF e/ou RMF em todas as disciplinas no semestre de ingresso",
-          },
-
-          {
-            startYear,
-            course,
-            status: "RF em todas as disciplinas por 2 semestres consecutivos",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Transfência para outra IES",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Matrícula Declarada Nula Por Decisão Judicial",
-          },
-
-          {
-            startYear,
-            course,
-            status: "Matrícula Declarada Nula Por Decisão Administrativa",
-          },
-        ],
+      const dropoutStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+        status: {
+          $in: [
+            "RF e/ou RM 3 vezes na mesma disciplina",
+            "RF 3 vezes na mesma disciplina",
+            "RF e/ou RM em todas as disciplinas no semestre de ingresso",
+            "Não renovou o vínculo com a UFG",
+            "Opção por outro curso da UFG",
+            "Desistência do curso",
+            "Esgotamento de prazo para conclusão de curso",
+            "RF e/ou RM em todas disciplinas por 2 semestres consecutivos",
+            "RF e/ou RMF em todas as disciplinas no semestre de ingresso",
+            "RF em todas as disciplinas por 2 semestres consecutivos",
+            "Transfência para outra IES",
+            "Matrícula Declarada Nula Por Decisão Judicial",
+            "Matrícula Declarada Nula Por Decisão Administrativa",
+          ],
+        },
       });
 
       const totalStudents: typeof Students = await Students.find({
@@ -328,10 +265,173 @@ module.exports = {
       return response.json({
         course,
         startYear,
-        graduatedStudents: graduatedStudents.length,
+        dropoutStudents: dropoutStudents.length,
         [`totalStudents${startYear}`]: totalStudents.length,
-        percentOfGraduatedStudents:
+        percentOfDropoutStudents: dropoutStudents.length / totalStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getPercentOfStudentsgraduatedQuotasFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos formados de um curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const startYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const graduatedStudents: typeof Students = await Students.find({
+        typeOfEntry: {
+          $in: [
+            "escola pública",
+            "negro escola pública",
+            "l2 - ppi renda inferior",
+            "l4 - ppi renda superior",
+            "l3 - dc renda superior",
+            "l1 - dc renda inferior",
+            "rs-ppi",
+            "ri",
+            "rs",
+            "ri-ppi",
+            "rs-ppi-cd",
+            "ri-ppi-cd",
+            "rs-cd",
+            "ri-cd",
+          ],
+        },
+        startYear,
+        course,
+        status: "Currículo integralizado",
+      });
+
+      const totalStudents: typeof Students = await Students.find({
+        typeOfEntry: {
+          $in: [
+            "escola pública",
+            "negro escola pública",
+            "l2 - ppi renda inferior",
+            "l4 - ppi renda superior",
+            "l3 - dc renda superior",
+            "l1 - dc renda inferior",
+            "rs-ppi",
+            "ri",
+            "rs",
+            "ri-ppi",
+            "rs-ppi-cd",
+            "ri-ppi-cd",
+            "rs-cd",
+            "ri-cd",
+          ],
+        },
+        startYear,
+        course,
+      });
+
+      return response.json({
+        course,
+        startYear,
+        graduatedQuotaStudents: graduatedStudents.length,
+        [`totalQuotaStudents${startYear}`]: totalStudents.length,
+        percentOfQuotaGraduatedStudents:
           graduatedStudents.length / totalStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getPercentOfDropoutStudentsQuotasFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes de um curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const startYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const dropoutQuotaStudents: typeof Students = await Students.find({
+        typeOfEntry: {
+          $in: [
+            "escola pública",
+            "negro escola pública",
+            "l2 - ppi renda inferior",
+            "l4 - ppi renda superior",
+            "l3 - dc renda superior",
+            "l1 - dc renda inferior",
+            "rs-ppi",
+            "ri",
+            "rs",
+            "ri-ppi",
+            "rs-ppi-cd",
+            "ri-ppi-cd",
+            "rs-cd",
+            "ri-cd",
+          ],
+        },
+        startYear,
+        course,
+        status: {
+          $in: [
+            "RF e/ou RM 3 vezes na mesma disciplina",
+            "RF 3 vezes na mesma disciplina",
+            "RF e/ou RM em todas as disciplinas no semestre de ingresso",
+            "Não renovou o vínculo com a UFG",
+            "Opção por outro curso da UFG",
+            "Desistência do curso",
+            "Esgotamento de prazo para conclusão de curso",
+            "RF e/ou RM em todas disciplinas por 2 semestres consecutivos",
+            "RF e/ou RMF em todas as disciplinas no semestre de ingresso",
+            "RF em todas as disciplinas por 2 semestres consecutivos",
+            "Transfência para outra IES",
+            "Matrícula Declarada Nula Por Decisão Judicial",
+            "Matrícula Declarada Nula Por Decisão Administrativa",
+          ],
+        },
+      });
+
+      const totalQuotaStudents: typeof Students = await Students.find({
+        typeOfEntry: {
+          $in: [
+            "escola pública",
+            "negro escola pública",
+            "l2 - ppi renda inferior",
+            "l4 - ppi renda superior",
+            "l3 - dc renda superior",
+            "l1 - dc renda inferior",
+            "rs-ppi",
+            "ri",
+            "rs",
+            "ri-ppi",
+            "rs-ppi-cd",
+            "ri-ppi-cd",
+            "rs-cd",
+            "ri-cd",
+          ],
+        },
+        startYear,
+        course,
+      });
+
+      return response.json({
+        course,
+        startYear,
+        dropoutQuotaStudents: dropoutQuotaStudents.length,
+        [`totalQuotaStudents${startYear}`]: totalQuotaStudents.length,
+        percentOfQuotaDropoutStudents:
+          dropoutQuotaStudents.length / totalQuotaStudents.length,
       });
     } catch (err) {
       return response.status(500);

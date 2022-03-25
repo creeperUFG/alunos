@@ -49,4 +49,16 @@ routes.get(
   StudentsController.getPercentOfDropoutStudentsFromCurse
 );
 
+// Get percent of graduated students by start year on course
+routes.get(
+  "/university/quota/graduated/students/percent/course/:course/startyear/:year",
+  StudentsController.getPercentOfStudentsgraduatedQuotasFromCurse
+);
+
+// Get percent of dropout students by start year on course
+routes.get(
+  "/university/quota/dropout/students/percent/course/:course/startyear/:year",
+  StudentsController.getPercentOfDropoutStudentsQuotasFromCurse
+);
+
 module.exports = routes;

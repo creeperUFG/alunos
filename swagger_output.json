@@ -109,7 +109,7 @@
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter todos os alunos.",
+        "description": "Endpoint para obter todos os alunos de um determinado ano.",
         "parameters": [
           {
             "name": "year",
@@ -159,7 +159,135 @@
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter todos os alunos.",
+        "description": "Endpoint para obter todos os alunos de um ano e curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/graduated/students/course/{course}/startyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter todos os alunos formados de um ano de início e curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/graduated/students/course/{course}/endyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter todos os alunos formados de um ano de início e curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/graduated/students/percent/course/{course}/startyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter a porcentagem de alunos formados de um curso.",
+        "parameters": [
+          {
+            "name": "course",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Curso dos aluno."
+          },
+          {
+            "name": "year",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de entrada dos alunos."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/dropout/students/percent/course/{course}/startyear/{year}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter a porcentagem de alunos desistentes de um curso.",
         "parameters": [
           {
             "name": "course",
