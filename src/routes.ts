@@ -25,4 +25,28 @@ routes.get(
   StudentsController.getAllFromYearAndCourse
 );
 
+// Get students that finished the course by course and start year
+routes.get(
+  "/university/graduated/students/course/:course/startyear/:year",
+  StudentsController.getAllgraduatedFromStartYearAndCourse
+);
+
+// Get students that finished the course by course and end year
+routes.get(
+  "/university/graduated/students/course/:course/endyear/:year",
+  StudentsController.getAllgraduatedFromEndYearAndCourse
+);
+
+// Get percent of graduated students by start year on course
+routes.get(
+  "/university/graduated/students/percent/course/:course/startyear/:year",
+  StudentsController.getPercentOfStudentsgraduatedFromCurse
+);
+
+// Get percent of dropout students by start year on course
+routes.get(
+  "/university/dropout/students/percent/course/:course/startyear/:year",
+  StudentsController.getPercentOfDropoutStudentsFromCurse
+);
+
 module.exports = routes;

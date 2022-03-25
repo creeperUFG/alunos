@@ -126,4 +126,215 @@ module.exports = {
       return response.status(500);
     }
   },
+
+  async getAllgraduatedFromStartYearAndCourse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter todos os alunos formados de um ano de início e curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const startYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const students: typeof Students = await Students.find({
+        startYear,
+        course,
+        status: "Currículo integralizado",
+      });
+
+      return response.json({
+        students,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getAllgraduatedFromEndYearAndCourse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter todos os alunos formados de um ano de início e curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const endYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const students: typeof Students = await Students.find({
+        endYear,
+        course,
+        status: "Currículo integralizado",
+      });
+
+      return response.json({
+        students,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getPercentOfStudentsgraduatedFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos formados de um curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const startYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const graduatedStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+        status: "Currículo integralizado",
+      });
+
+      const totalStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+      });
+
+      return response.json({
+        course,
+        startYear,
+        graduatedStudents: graduatedStudents.length,
+        [`totalStudents${startYear}`]: totalStudents.length,
+        percentOfGraduatedStudents:
+          graduatedStudents.length / totalStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getPercentOfDropoutStudentsFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes de um curso.'
+
+    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+
+    const startYear = request.params.year;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const graduatedStudents: typeof Students = await Students.find({
+        $or: [
+          {
+            startYear,
+            course,
+            status: "RF e/ou RM 3 vezes na mesma disciplina",
+          },
+
+          {
+            startYear,
+            course,
+            status: "RF 3 vezes na mesma disciplina",
+          },
+
+          {
+            startYear,
+            course,
+            status:
+              "RF e/ou RM em todas as disciplinas no semestre de ingresso",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Não renovou o vínculo com a UFG",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Opção por outro curso da UFG",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Desistência do curso",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Esgotamento de prazo para conclusão de curso",
+          },
+
+          {
+            startYear,
+            course,
+            status:
+              "RF e/ou RM em todas disciplinas por 2 semestres consecutivos",
+          },
+
+          {
+            startYear,
+            course,
+            status:
+              "RF e/ou RMF em todas as disciplinas no semestre de ingresso",
+          },
+
+          {
+            startYear,
+            course,
+            status: "RF em todas as disciplinas por 2 semestres consecutivos",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Transfência para outra IES",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Matrícula Declarada Nula Por Decisão Judicial",
+          },
+
+          {
+            startYear,
+            course,
+            status: "Matrícula Declarada Nula Por Decisão Administrativa",
+          },
+        ],
+      });
+
+      const totalStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+      });
+
+      return response.json({
+        course,
+        startYear,
+        graduatedStudents: graduatedStudents.length,
+        [`totalStudents${startYear}`]: totalStudents.length,
+        percentOfGraduatedStudents:
+          graduatedStudents.length / totalStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
 };
