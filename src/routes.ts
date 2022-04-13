@@ -42,26 +42,26 @@ routes.get(
 
 // Get percent of graduated students by start year on course
 routes.get(
-  "/university/graduated/students/percent/course/:course/startyear/:year",
-  StudentsController.getPercentOfStudentsgraduatedFromCurse
-);
-
-// Get percent of dropout students by start year on course
-routes.get(
-  "/university/dropout/students/percent/course/:course/startyear/:year",
-  StudentsController.getPercentOfDropoutStudentsFromCurse
+  "/university/students/number/course/:course/year/:year",
+  StudentsController.getNumberOfStudentsFromCurse
 );
 
 // Get percent of graduated students by start year on course
 routes.get(
-  "/university/quota/graduated/students/percent/course/:course/startyear/:year",
-  StudentsController.getPercentOfStudentsgraduatedQuotasFromCurse
+  "/university/quota/students/number/course/:course/year/:year",
+  StudentsController.getNumberOfQuotaStudentsFromCurse
 );
 
-// Get percent of dropout students by start year on course
+// Get number of active students from curse
 routes.get(
-  "/university/quota/dropout/students/percent/course/:course/startyear/:year",
-  StudentsController.getPercentOfDropoutStudentsQuotasFromCurse
+  "/university/students/active/course/:course/",
+  StudentsController.getNumberOfActiveStudentsFromCurse
+);
+
+// Get number of active students from curse
+routes.get(
+  "/university/quota/students/active/course/:course/",
+  StudentsController.getNumberOfActiveQuotaStudentsFromCurse
 );
 
 module.exports = routes;

@@ -154,6 +154,23 @@
         }
       }
     },
+    "/university/courses": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter todos os cursos da ufg.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/university/students/course/{course}/year/{year}": {
       "get": {
         "tags": [
@@ -250,7 +267,7 @@
         }
       }
     },
-    "/university/graduated/students/percent/course/{course}/startyear/{year}": {
+    "/university/graduated/students/percent/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
@@ -269,7 +286,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de entrada dos alunos."
+            "description": "Ano de saida dos alunos."
           }
         ],
         "responses": {
@@ -282,7 +299,7 @@
         }
       }
     },
-    "/university/dropout/students/percent/course/{course}/startyear/{year}": {
+    "/university/dropout/students/percent/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
@@ -301,7 +318,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de entrada dos alunos."
+            "description": "Ano de saida dos alunos."
           }
         ],
         "responses": {
@@ -314,7 +331,7 @@
         }
       }
     },
-    "/university/quota/graduated/students/percent/course/{course}/startyear/{year}": {
+    "/university/quota/graduated/students/percent/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
@@ -333,7 +350,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de entrada dos alunos."
+            "description": "Ano de saida dos alunos."
           }
         ],
         "responses": {
@@ -346,7 +363,7 @@
         }
       }
     },
-    "/university/quota/dropout/students/percent/course/{course}/startyear/{year}": {
+    "/university/quota/dropout/students/percent/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
@@ -365,7 +382,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de entrada dos alunos."
+            "description": "Ano de saída dos alunos."
           }
         ],
         "responses": {

@@ -199,60 +199,28 @@ module.exports = {
     }
   },
 
-  async getPercentOfStudentsgraduatedFromCurse(
+  async getNumberOfStudentsFromCurse(
     request: express.Request,
     response: express.Response
   ) {
     // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos formados de um curso.'
+    // #swagger.description = 'Endpoint para obter ao numero de alunos do curso.'
 
-    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['year'] = { description: 'Ano da busca dos indicadores.' }
     // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
 
-    const startYear = request.params.year;
+    const year = request.params.year;
     const course = functions.capitalizeFirstLetter(request.params.course);
 
     try {
       const graduatedStudents: typeof Students = await Students.find({
-        startYear,
+        endYear: year,
         course,
         status: "Currículo integralizado",
       });
 
-      const totalStudents: typeof Students = await Students.find({
-        startYear,
-        course,
-      });
-
-      return response.json({
-        course,
-        startYear,
-        graduatedStudents: graduatedStudents.length,
-        [`totalStudents${startYear}`]: totalStudents.length,
-        percentOfGraduatedStudents:
-          graduatedStudents.length / totalStudents.length,
-      });
-    } catch (err) {
-      return response.status(500);
-    }
-  },
-
-  async getPercentOfDropoutStudentsFromCurse(
-    request: express.Request,
-    response: express.Response
-  ) {
-    // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes de um curso.'
-
-    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
-    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
-
-    const startYear = request.params.year;
-    const course = functions.capitalizeFirstLetter(request.params.course);
-
-    try {
       const dropoutStudents: typeof Students = await Students.find({
-        startYear,
+        endYear: year,
         course,
         status: {
           $in: [
@@ -273,34 +241,34 @@ module.exports = {
         },
       });
 
-      const totalStudents: typeof Students = await Students.find({
-        startYear,
+      const activeStudents: typeof Students = await Students.find({
         course,
+        status: "",
       });
 
       return response.json({
         course,
-        startYear,
+        year,
+        graduatedStudents: graduatedStudents.length,
         dropoutStudents: dropoutStudents.length,
-        [`totalStudents${startYear}`]: totalStudents.length,
-        percentOfDropoutStudents: dropoutStudents.length / totalStudents.length,
+        activeStudents: activeStudents.length,
       });
     } catch (err) {
       return response.status(500);
     }
   },
 
-  async getPercentOfStudentsgraduatedQuotasFromCurse(
+  async getNumberOfQuotaStudentsFromCurse(
     request: express.Request,
     response: express.Response
   ) {
     // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos cotistas formados de um curso.'
+    // #swagger.description = 'Endpoint para obter indicadores de alunos cotistas de um curso.'
 
-    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
+    // #swagger.parameters['year'] = { description: 'Ano da busca dos alunos.' }
     // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
 
-    const startYear = request.params.year;
+    const year = request.params.year;
     const course = functions.capitalizeFirstLetter(request.params.course);
 
     try {
@@ -323,61 +291,11 @@ module.exports = {
             "ri-cd",
           ],
         },
-        startYear,
+        endYear: year,
         course,
         status: "Currículo integralizado",
       });
 
-      const totalStudents: typeof Students = await Students.find({
-        typeOfEntry: {
-          $in: [
-            "escola pública",
-            "negro escola pública",
-            "l2 - ppi renda inferior",
-            "l4 - ppi renda superior",
-            "l3 - dc renda superior",
-            "l1 - dc renda inferior",
-            "rs-ppi",
-            "ri",
-            "rs",
-            "ri-ppi",
-            "rs-ppi-cd",
-            "ri-ppi-cd",
-            "rs-cd",
-            "ri-cd",
-          ],
-        },
-        startYear,
-        course,
-      });
-
-      return response.json({
-        course,
-        startYear,
-        graduatedQuotaStudents: graduatedStudents.length,
-        [`totalQuotaStudents${startYear}`]: totalStudents.length,
-        percentOfQuotaGraduatedStudents:
-          graduatedStudents.length / totalStudents.length,
-      });
-    } catch (err) {
-      return response.status(500);
-    }
-  },
-
-  async getPercentOfDropoutStudentsQuotasFromCurse(
-    request: express.Request,
-    response: express.Response
-  ) {
-    // #swagger.tags = ['Students']
-    // #swagger.description = 'Endpoint para obter a porcentagem de alunos desistentes cotistas de um curso.'
-
-    // #swagger.parameters['year'] = { description: 'Ano de entrada dos alunos.' }
-    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
-
-    const startYear = request.params.year;
-    const course = functions.capitalizeFirstLetter(request.params.course);
-
-    try {
       const dropoutQuotaStudents: typeof Students = await Students.find({
         typeOfEntry: {
           $in: [
@@ -397,7 +315,7 @@ module.exports = {
             "ri-cd",
           ],
         },
-        startYear,
+        endYear: year,
         course,
         status: {
           $in: [
@@ -418,7 +336,54 @@ module.exports = {
         },
       });
 
-      const totalQuotaStudents: typeof Students = await Students.find({
+      return response.json({
+        course,
+        year,
+        graduatedQuotaStudents: graduatedStudents.length,
+        dropoutQuotaStudents: dropoutQuotaStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getNumberOfActiveStudentsFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter ao numero de alunos por quotas ativos do curso.'
+
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const activeStudents: typeof Students = await Students.find({
+        course,
+        status: "",
+      });
+
+      return response.json({
+        course,
+        activeStudents: activeStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
+  async getNumberOfActiveQuotaStudentsFromCurse(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter ao numero de alunos ativos do curso.'
+
+    // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const activeStudents: typeof Students = await Students.find({
         typeOfEntry: {
           $in: [
             "escola pública",
@@ -437,17 +402,13 @@ module.exports = {
             "ri-cd",
           ],
         },
-        startYear,
         course,
+        status: "",
       });
 
       return response.json({
         course,
-        startYear,
-        dropoutQuotaStudents: dropoutQuotaStudents.length,
-        [`totalQuotaStudents${startYear}`]: totalQuotaStudents.length,
-        percentOfQuotaDropoutStudents:
-          dropoutQuotaStudents.length / totalQuotaStudents.length,
+        activeStudents: activeStudents.length,
       });
     } catch (err) {
       return response.status(500);
