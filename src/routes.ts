@@ -19,6 +19,9 @@ routes.get(
   StudentsController.getAllFromCourse
 );
 
+// Get courses
+routes.get("/university/courses", StudentsController.getCourses);
+
 // Get students by course and year
 routes.get(
   "/university/students/course/:course/year/:year",

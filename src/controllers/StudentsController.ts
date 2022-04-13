@@ -79,13 +79,29 @@ module.exports = {
     }
   },
 
+  async getCourses(request: express.Request, response: express.Response) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter todos os cursos da ufg.'
+
+    const startYear = request.params.year;
+
+    try {
+      const courses: typeof Students = await Students.distinct("course");
+      return response.json({
+        courses,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
+
   async getAllFromCourse(request: express.Request, response: express.Response) {
     // #swagger.tags = ['Students']
     // #swagger.description = 'Endpoint para obter todos os alunos de um curso.'
 
     // #swagger.parameters['course'] = { description: 'Curso dos aluno.' }
 
-    const course = request.params.year;
+    const course = request.params.course;
 
     try {
       const students: typeof Students = await Students.find({
