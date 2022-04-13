@@ -414,4 +414,68 @@ module.exports = {
       return response.status(500);
     }
   },
+
+  async getClassIndicators(
+    request: express.Request,
+    response: express.Response
+  ) {
+    // #swagger.tags = ['Students']
+    // #swagger.description = 'Endpoint para obter ao numero de alunos do curso.'
+
+    // #swagger.parameters['startYear'] = { description: 'Ano de início da turma.' }
+    // #swagger.parameters['endYear'] = { description: 'Ano de termino da turma.' }
+    // #swagger.parameters['course'] = { description: 'Curso dos alunos.' }
+
+    const startYear = request.params.startYear;
+    const endYear = request.params.endYear;
+    const course = functions.capitalizeFirstLetter(request.params.course);
+
+    try {
+      const graduatedStudents: typeof Students = await Students.find({
+        startYear,
+        endYear,
+        course,
+        status: "Currículo integralizado",
+      });
+
+      const dropoutStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+        status: {
+          $in: [
+            "RF e/ou RM 3 vezes na mesma disciplina",
+            "RF 3 vezes na mesma disciplina",
+            "RF e/ou RM em todas as disciplinas no semestre de ingresso",
+            "Não renovou o vínculo com a UFG",
+            "Opção por outro curso da UFG",
+            "Desistência do curso",
+            "Esgotamento de prazo para conclusão de curso",
+            "RF e/ou RM em todas disciplinas por 2 semestres consecutivos",
+            "RF e/ou RMF em todas as disciplinas no semestre de ingresso",
+            "RF em todas as disciplinas por 2 semestres consecutivos",
+            "Transfência para outra IES",
+            "Matrícula Declarada Nula Por Decisão Judicial",
+            "Matrícula Declarada Nula Por Decisão Administrativa",
+          ],
+        },
+      });
+
+      const activeStudents: typeof Students = await Students.find({
+        startYear,
+        course,
+        status: "",
+      });
+
+      return response.json({
+        course,
+        endYear,
+        startYear,
+        graduatedStudents: graduatedStudents.length,
+        dropoutStudents: dropoutStudents.length,
+        activeStudents: activeStudents.length,
+      });
+    } catch (err) {
+      return response.status(500);
+    }
+  },
 };

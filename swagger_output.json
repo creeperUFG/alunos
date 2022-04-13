@@ -267,12 +267,12 @@
         }
       }
     },
-    "/university/graduated/students/percent/course/{course}/year/{year}": {
+    "/university/students/number/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter a porcentagem de alunos formados de um curso.",
+        "description": "Endpoint para obter ao numero de alunos do curso.",
         "parameters": [
           {
             "name": "course",
@@ -286,7 +286,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de saida dos alunos."
+            "description": "Ano da busca dos indicadores."
           }
         ],
         "responses": {
@@ -299,12 +299,12 @@
         }
       }
     },
-    "/university/dropout/students/percent/course/{course}/year/{year}": {
+    "/university/quota/students/number/course/{course}/year/{year}": {
       "get": {
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter a porcentagem de alunos desistentes de um curso.",
+        "description": "Endpoint para obter indicadores de alunos cotistas de um curso.",
         "parameters": [
           {
             "name": "course",
@@ -318,7 +318,7 @@
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de saida dos alunos."
+            "description": "Ano da busca dos alunos."
           }
         ],
         "responses": {
@@ -331,12 +331,12 @@
         }
       }
     },
-    "/university/quota/graduated/students/percent/course/{course}/year/{year}": {
+    "/university/students/active/course/{course}/": {
       "get": {
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter a porcentagem de alunos cotistas formados de um curso.",
+        "description": "Endpoint para obter ao numero de alunos por quotas ativos do curso.",
         "parameters": [
           {
             "name": "course",
@@ -344,13 +344,6 @@
             "required": true,
             "type": "string",
             "description": "Curso dos aluno."
-          },
-          {
-            "name": "year",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "description": "Ano de saida dos alunos."
           }
         ],
         "responses": {
@@ -363,12 +356,12 @@
         }
       }
     },
-    "/university/quota/dropout/students/percent/course/{course}/year/{year}": {
+    "/university/quota/students/active/course/{course}/": {
       "get": {
         "tags": [
           "Students"
         ],
-        "description": "Endpoint para obter a porcentagem de alunos desistentes cotistas de um curso.",
+        "description": "Endpoint para obter ao numero de alunos ativos do curso.",
         "parameters": [
           {
             "name": "course",
@@ -376,13 +369,45 @@
             "required": true,
             "type": "string",
             "description": "Curso dos aluno."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/university/class/indicators/course/{course}/startyear/{startYear}/endyear/{endYear}": {
+      "get": {
+        "tags": [
+          "Students"
+        ],
+        "description": "Endpoint para obter ao numero de alunos do curso.",
+        "parameters": [
           {
-            "name": "year",
+            "name": "course",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "Ano de saída dos alunos."
+            "description": "Curso dos alunos."
+          },
+          {
+            "name": "startYear",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de início da turma."
+          },
+          {
+            "name": "endYear",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Ano de termino da turma."
           }
         ],
         "responses": {

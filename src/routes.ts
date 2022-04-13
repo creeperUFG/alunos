@@ -64,4 +64,10 @@ routes.get(
   StudentsController.getNumberOfActiveQuotaStudentsFromCurse
 );
 
+// Get Class indicators
+routes.get(
+  "/university/class/indicators/course/:course/startyear/:startYear/endyear/:endYear",
+  StudentsController.getClassIndicators
+);
+
 module.exports = routes;
