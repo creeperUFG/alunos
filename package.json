@@ -4,6 +4,7 @@
   "description": "Microsservice - Students",
   "main": "index.js",
   "scripts": {
+    "start": "npx ts-node index.ts",
     "swagger-autogen": "ts-node swagger.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
