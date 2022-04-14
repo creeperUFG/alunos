@@ -1,21 +1,19 @@
+import "dotenv/config";
 const express = require("express");
 const mongoose = require("mongoose");
-const routes = require("./src/routes");
+const routes = require("../routes");
 const http = require("http");
 const cors = require("cors");
 const app = express();
 const server = http.Server(app);
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerFile = require("./swagger_output.json");
+const swaggerFile = require("../../swagger_output.json");
 
-mongoose.connect(
-  "mongodb+srv://creeper:c1012UFG@cluster0.ybwxo.mongodb.net/creeper?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 app.use(cors());
 
