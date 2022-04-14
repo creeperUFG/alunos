@@ -1,5 +1,5 @@
 import express from "express";
-const functions = require("../functions.ts");
+const functions = require("../functions");
 const Students = require("./../models/Students");
 
 module.exports = {
